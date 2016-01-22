@@ -15,7 +15,7 @@ using namespace std;
 using namespace std::chrono;
 
 #define N 100				// default number of investigated nodes (first N ID's of the network)
-#define THRESHOLD 0.5		// default nodes threshold value
+#define THRESHOLD 0.5		// default nodes' threshold value
 #define THREADNUM 192		// default number of threads within blocks
 #define testRuns 1			// default number of test runs. Change in order to measure the average time for a few test runs.
 #define ITERATIONS 10000	// default maximum number of iterations
@@ -119,18 +119,18 @@ int readFile(float inf_f[][N], int connections_i[])
 			if (atoi(token[0]) - 1 < N && atoi(token[1]) - 1 < N)
 			{
 				inf_f[atoi(token[0]) - 1][atoi(token[1]) - 1] += 1;  // calculating the total number of iteractions from "i" to "j"
-				connections_i[atoi(token[0]) - 1] += 1; // calculating the total number of iteractions from "i" to any node
+				connections_i[atoi(token[1]) - 1] += 1; // calculating the total number of received interactions by the "j" node
 			}
 		}
 	}
 
-	for (int i = 0; i < N; i++) // Influence value calculated as the ratio of iteractions from "i" node to "j" node, to the total number of broadcasted messages by the "i" node.
+	for (int i = 0; i < N; i++) // Influence value calculated as the ratio of iteractions from "i" node to "j" node, to the total number of received iteractions by the "j" node.
 	{
 		for (int j = 0; j < N; j++)
 		{
 			if (connections_i[i] != 0)
 			{
-				inf_f[i][j] = inf_f[i][j] / connections_i[i];
+				inf_f[i][j] = inf_f[i][j] / connections_i[j];
 			}
 		}
 	}
